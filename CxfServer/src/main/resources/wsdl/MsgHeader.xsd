@@ -1,0 +1,17 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+
+<schema 
+	targetNamespace="http://ws.simbest.com/MsgHeader" 	
+	elementFormDefault="qualified" 
+	attributeFormDefault="qualified" 
+	xmlns="http://www.w3.org/2001/XMLSchema">
+
+<complexType name="MsgHeader">
+    <sequence>
+        <element name="APP_ID" type="string" nillable="true"/>
+	 	<element name="APP_NAME" type="string" nillable="true"/>
+	 	<element name="SUBMIT_DATE" type="dateTime" nillable="true"/>
+    </sequence>
+</complexType>
+
+</schema>

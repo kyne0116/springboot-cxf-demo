@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema attributeFormDefault="unqualified" elementFormDefault="qualified"
+	targetNamespace="http://ws.simbest.com/HumanSrv" xmlns:msg="http://ws.simbest.com/MsgHeader"
+	xmlns:tns="http://ws.simbest.com/HumanSrv" xmlns="http://www.w3.org/2001/XMLSchema">
+	<import namespace="http://ws.simbest.com/MsgHeader" schemaLocation="MsgHeader.xsd" />
+	<complexType name="product">
+		<sequence>
+			<element name="productId" type="int" />
+			<element name="description" type="string" />
+			<element name="price" type="double" />
+			<element name="shoppingCart" type="tns:shoppingCart" />
+		</sequence>
+	</complexType>
+	<complexType name="shoppingCart">
+		<sequence>
+			<element name="cartId" type="int" />
+			<element name="lastUpdateDate" type="dateTime" />
+			<element name="product" type="tns:product" nillable="true"
+				minOccurs="0" maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<simpleType name="gender">
+		<restriction base="string">
+			<enumeration value="MAIL" />
+			<enumeration value="FEMAIL" />
+		</restriction>
+	</simpleType>
+	<complexType name="human" abstract="true">
+		<sequence>
+			<element name="age" type="int" nillable="true" />
+			<element name="gender" type="tns:gender" nillable="true" />
+		</sequence>
+	</complexType>
+
+	<complexType name="person">
+		<complexContent>
+			<extension base="tns:human">
+				<sequence>
+					<element name="name" type="string" nillable="true" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="employee">
+		<complexContent>
+			<extension base="tns:person">
+				<sequence>
+					<element name="employeeId" type="int" nillable="true" />
+					<element name="departmentName" type="string" nillable="true" />
+					<element name="onVacation" type="boolean" nillable="true" />
+					<element name="manager" type="tns:employee" nillable="true" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+	<complexType name="customer">
+		<complexContent>
+			<extension base="tns:person">
+				<sequence>
+					<element name="customerId" type="int" nillable="true" />
+					<element name="shoppingCart" type="tns:shoppingCart"
+						nillable="true" />
+				</sequence>
+			</extension>
+		</complexContent>
+	</complexType>
+
+	<element name="getPeopleAgeInput" type="tns:getPeopleAgeInput" />
+	<complexType name="getPeopleAgeInput">
+		<sequence>
+			<element name="msgHeader" type="msg:MsgHeader" nillable="true" />
+			<element name="person" type="tns:person" nillable="true" />
+		</sequence>
+	</complexType>
+	<element name="getPeopleAgeOutput" type="tns:getPeopleAgeOutput" />
+	<complexType name="getPeopleAgeOutput">
+		<sequence>
+			<element name="result" type="string" />
+		</sequence>
+	</complexType>
+	<element name="getManagerInput" type="tns:getManagerInput" />
+	<complexType name="getManagerInput">
+		<sequence>
+			<element name="msgHeader" type="msg:MsgHeader" nillable="true" />
+			<element name="employee" type="tns:employee" nillable="true" />
+		</sequence>
+	</complexType>
+	<element name="getManagerOutput" type="tns:getManagerOutput" />
+	<complexType name="getManagerOutput">
+		<sequence>
+			<element name="manager" type="tns:employee" />
+		</sequence>
+	</complexType>
+	<element name="getCustomersInput" type="tns:getCustomersInput" />
+	<complexType name="getCustomersInput">
+		<sequence>
+			<element name="msgHeader" type="msg:MsgHeader" nillable="true" />
+			<element name="gender" type="tns:gender" nillable="true" />
+		</sequence>
+	</complexType>
+	<element name="getCustomersOutput" type="tns:getCustomersOutput" />
+	<complexType name="getCustomersOutput">
+		<sequence>
+			<element name="customers" type="tns:customer" minOccurs="0"
+				maxOccurs="unbounded" />
+		</sequence>
+	</complexType>
+	<element name="NoSuchPerson" type="tns:NoSuchPerson" />
+	<complexType name="NoSuchPerson">
+		<sequence>
+			<element name="name" type="string" nillable="true" />
+		</sequence>
+	</complexType>
+</schema>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="HumanSrv" targetNamespace="http://ws.simbest.com/HumanSrv"
+	xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://ws.simbest.com/HumanSrv"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:p="http://www.w3.org/2001/XMLSchema">
+	<types>
+		<schema xmlns="http://www.w3.org/2001/XMLSchema">
+			<import namespace="http://ws.simbest.com/HumanSrv"
+				schemaLocation="HumanSrv.xsd" />
+		</schema>
+	</types>
+	
+	<message name="getPeopleAgeInput">		
+                <part name="person" element="tns:getPeopleAgeInput" />
+	</message>
+	<message name="getPeopleAgeOutput">
+		<part name="result" element="tns:getPeopleAgeOutput" />
+	</message>	
+	<message name="getManagerInput">
+		<part name="employee" element="tns:getManagerInput" />
+	</message>
+	<message name="getManagerOutput">
+		<part name="manager" element="tns:getManagerOutput" />
+	</message>
+	<message name="getCustomersInput">
+		<part name="gender" element="tns:getCustomersInput" />
+	</message>
+	<message name="getCustomersOutput">
+		<part name="customers" element="tns:getCustomersOutput" />
+	</message>
+	<message name="NoSuchPersonException">
+		<part name="NoSuchPersonException" element="tns:NoSuchPerson" />
+	</message>
+	<portType name="HumanSrvService">
+		<operation name="getPeopleAge">
+			<input name="getPeopleAgeInput" message="tns:getPeopleAgeInput" />
+			<output name="getPeopleAgeOutput" message="tns:getPeopleAgeOutput" />
+		</operation>
+		<operation name="getManager">
+			<input name="getManagerInput" message="tns:getManagerInput" />
+			<output name="getManagerOutput" message="tns:getManagerOutput" />
+			<fault name="NoSuchPersonException" message="tns:NoSuchPersonException" />
+		</operation>
+		<operation name="getCustomers">
+			<input name="getCustomersInput" message="tns:getCustomersInput" />
+			<output name="getCustomersOutput" message="tns:getCustomersOutput" />
+			<fault name="NoSuchPersonException" message="tns:NoSuchPersonException" />
+		</operation>
+	</portType>
+	<binding name="HumanSrvSoapBinding" type="tns:HumanSrvService">
+		<soap:binding style="document"
+			transport="http://schemas.xmlsoap.org/soap/http" />		
+		<operation name="getPeopleAge">
+			<soap:operation soapAction="getPeopleAge" style="document" />
+			<input name="getPeopleAgeInput">
+				<soap:body use="literal" />
+			</input>
+			<output name="getPeopleAgeOutput">
+				<soap:body use="literal" />
+			</output>
+		</operation>
+		<operation name="getManager">
+			<soap:operation soapAction="getManager" style="document" />
+			<input name="getManagerInput">
+				<soap:body use="literal" />
+			</input>
+			<output name="getManagerOutput">
+				<soap:body use="literal" />
+			</output>
+			<fault name="NoSuchPersonException">
+				<soap:fault name="NoSuchPersonException" use="literal" />
+			</fault>
+		</operation>
+		<operation name="getCustomers">
+			<soap:operation soapAction="getCustomers" style="document" />
+			<input name="getCustomersInput">
+				<soap:body use="literal" />
+			</input>
+			<output name="getCustomersOutput">
+				<soap:body use="literal" />
+			</output>
+			<fault name="NoSuchPersonException">
+				<soap:fault name="NoSuchPersonException" use="literal" />
+			</fault>
+		</operation>
+	</binding>
+	<service name="HumanSrv">
+		<port name="HumanSrvPort" binding="tns:HumanSrvSoapBinding">
+			<!-- embedded deployment -->
+			<soap:address location="http://localhost:8888/soa-infra/HumanSrvEndpoint" />
+		</port>
+	</service>
+</definitions>
